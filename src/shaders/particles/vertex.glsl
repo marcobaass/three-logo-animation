@@ -2,21 +2,20 @@ uniform vec2 uResolution;
 uniform float uSize;
 uniform float uTime;
 uniform float uExplosion;
+uniform float uWaveFreq;
+uniform float uWaveAmp;
 
 void main()
 {
-    float waveFreq = 8.0;
-    float waveAmp = 0.9;
-
     // Wavy band in Y (curves horizontally)
-    float bandCenterY = sin(position.x * waveFreq - uTime * 0.6) * waveAmp;
+    float bandCenterY = sin(position.x * uWaveFreq - uTime * 0.6) * uWaveAmp;
     float distToBandY = position.y - bandCenterY;
     float concentrationY = exp(-distToBandY * distToBandY * 1.0);
     float pullStrengthY = 0.1;
     float offsetY = (bandCenterY - position.y) * concentrationY * pullStrengthY;
 
     // Wavy band in X (curves vertically)
-    float bandCenterX = sin(position.y * waveFreq - uTime * 0.3) * waveAmp;
+    float bandCenterX = sin(position.y * uWaveFreq - uTime * 0.3) * uWaveAmp;
     float distToBandX = position.x - bandCenterX;
     float concentrationX = exp(-distToBandX * distToBandX * 6.0);
     float pullStrengthX = 0.2;

@@ -112,6 +112,8 @@ const particles = {
             uSize: new THREE.Uniform(0.07),
             uResolution: new THREE.Uniform(new THREE.Vector2(sizes.width * sizes.pixelRatio, sizes.height * sizes.pixelRatio)),
             uTime: new THREE.Uniform(0),
+            uWaveFreq: new THREE.Uniform(16.0),
+            uWaveAmp: new THREE.Uniform(3.5),
         }
     })
 }
@@ -184,6 +186,9 @@ gui.add(debugObject, 'scale').min(0.1).max(10).step(0.1).name('Scale').onChange(
 gui.add(particles.material.uniforms.uSize, 'value').min(0.01).max(0.1).step(0.01).name('Size')
 debugObject.explosion = 0
 gui.add(debugObject, 'explosion', 0, 1, 0.01).name('Explosion').onChange((v) => { explosionTarget = v })
+
+gui.add(particles.material.uniforms.uWaveFreq, 'value').min(1).max(20).step(1).name('Wave Frequency')
+gui.add(particles.material.uniforms.uWaveAmp, 'value').min(0.1).max(5).step(0.1).name('Wave Amplitude')
 
 /**
  * Animate
