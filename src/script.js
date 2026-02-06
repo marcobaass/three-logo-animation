@@ -134,8 +134,13 @@ gsap.to({}, {
         start: 'top top',
         end: 'bottom bottom',
         scrub: 1,
-        onUpdate: (self) => { explosionTarget = self.progress }
+        yoyo: true,
+        repeat: 1,
+        onUpdate: (self) => {
+            explosionTarget = Math.sin(self.progress * Math.PI)
+        }     
     }
+    
 })
 
 /**
