@@ -126,11 +126,25 @@ particles.points = new THREE.Points(particles.geometry, particles.material)
 scene.add(particles.points)
 
 /**
- * Explosion (GSAP ScrollTrigger)
+ * Explosion (GSAP ScrollTrigger + hover)
  */
 let explosionCurrent = 0
 let explosionTarget = 0
+let scrollExplosionTarget = 0
 const explosionSpeed = 3
+
+const pointer = new THREE.Vector2()
+const logoCenter = new THREE.Vector3(0, 0, 0)
+const hoverRadius = 0.4
+
+window.addEventListener('pointermove', (e) => {
+    pointer.x = (e.clientX / sizes.width) * 2 - 1
+    pointer.y = -((e.clientY / sizes.height) * 2 - 1)
+})
+
+window.addEventListener('pointerleave', () => {
+    pointer.set(-10, -10)
+})
 
 gsap.to({}, {
     scrollTrigger: {
@@ -141,10 +155,9 @@ gsap.to({}, {
         yoyo: true,
         repeat: 1,
         onUpdate: (self) => {
-            explosionTarget = Math.sin(self.progress * Math.PI)
-        }     
+            scrollExplosionTarget = Math.sin(self.progress * Math.PI)
+        }
     }
-    
 })
 
 /**
@@ -207,6 +220,17 @@ const clock = new THREE.Clock()
 function tick() {
     const delta = clock.getDelta()
     particles.material.uniforms.uTime.value = clock.getElapsedTime()
+
+    // Rotate the particles logo
+    particles.points.rotation.y += 0.0025
+
+    // Hover: project logo center to screen, check if pointer is near
+    logoCenter.set(0, 0, 0)
+    logoCenter.project(camera)
+    const distance = pointer.distanceTo(new THREE.Vector2(logoCenter.x, logoCenter.y))
+    const hoverExplosion = distance < hoverRadius ? 1 : 0
+    explosionTarget = Math.max(scrollExplosionTarget, hoverExplosion, debugObject.explosion ?? 0)
+
     explosionCurrent += (explosionTarget - explosionCurrent) * Math.min(1, explosionSpeed * delta)
     particles.material.uniforms.uExplosion.value = explosionCurrent
     renderer.render(scene, camera)
