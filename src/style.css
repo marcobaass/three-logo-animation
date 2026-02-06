@@ -1,19 +1,24 @@
-*
-{
+* {
     margin: 0;
     padding: 0;
 }
 
-html,
-body
-{
-    overflow: hidden;
+html, body {
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
-.webgl
-{
+.scroll-spacer {
+    height: 200vh;
+    pointer-events: none;
+}
+
+canvas.webgl {
     position: fixed;
     top: 0;
     left: 0;
-    outline: none;
+    width: 100vw;
+    height: 100vh;
+    display: block;
+    pointer-events: none;
 }

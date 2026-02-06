@@ -6,7 +6,7 @@ uniform float uExplosion;
 void main()
 {
     float waveFreq = 8.0;
-    float waveAmp = 3.0;
+    float waveAmp = 0.9;
 
     // Wavy band in Y (curves horizontally)
     float bandCenterY = sin(position.x * waveFreq - uTime * 0.6) * waveAmp;
@@ -24,12 +24,14 @@ void main()
 
     vec3 pos = position + vec3(offsetX, offsetY, 0.0);
 
-    // Move particles outward from center
-    float distFromCenter = length(pos.xy) + 0.0001;
-    vec2 explosionDir = pos.xy / distFromCenter;
-    float explosionStrength = 0.5;
-    pos.xy += explosionDir * uExplosion * explosionStrength * distFromCenter;
-    // (distFromCenter makes farther pixels move more; remove it for uniform spread)
+    // Shatter: each particle moves in its own random direction (from position seed)
+    float explosionStrength = 1.0;
+    vec2 randomDir = vec2(
+        fract(sin(dot(pos.xy, vec2(12.9898, 78.233))) * 43758.5453),
+        fract(sin(dot(pos.xy + 1.0, vec2(12.9898, 78.233))) * 43758.5453)
+    );
+    randomDir = normalize(randomDir * 2.0 - 1.0);
+    pos.xy += randomDir * uExplosion * explosionStrength;
 
     vec4 modelPosition = modelMatrix * vec4(pos, 1.0);
     vec4 viewPosition = viewMatrix * modelPosition;
