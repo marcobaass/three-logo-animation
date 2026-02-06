@@ -92,10 +92,14 @@ scene.add(camera)
 /**
  * Renderer
  */
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true })
+const renderer = new THREE.WebGLRenderer({
+    canvas,
+    antialias: true,
+    alpha: true,
+})
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(sizes.pixelRatio)
-renderer.setClearColor('#fff')
+renderer.setClearColor(0x000000, 0)
 
 /**
  * Particles
@@ -109,7 +113,7 @@ const particles = {
         depthWrite: false,
         uniforms: {
             uExplosion: new THREE.Uniform(0),
-            uSize: new THREE.Uniform(0.07),
+            uSize: new THREE.Uniform(0.08),
             uResolution: new THREE.Uniform(new THREE.Vector2(sizes.width * sizes.pixelRatio, sizes.height * sizes.pixelRatio)),
             uTime: new THREE.Uniform(0),
             uWaveFreq: new THREE.Uniform(16.0),
@@ -126,7 +130,7 @@ scene.add(particles.points)
  */
 let explosionCurrent = 0
 let explosionTarget = 0
-const explosionSpeed = 6
+const explosionSpeed = 3
 
 gsap.to({}, {
     scrollTrigger: {
@@ -182,9 +186,9 @@ function updateParticles() {
  */
 debugObject.clearColor = '#fff'
 gui.addColor(debugObject, 'clearColor').onChange((c) => renderer.setClearColor(c))
-renderer.setClearColor(debugObject.clearColor)
+// renderer.setClearColor(debugObject.clearColor)
 
-debugObject.spacing = 6
+debugObject.spacing = 8
 debugObject.scale = 3
 gui.add(debugObject, 'spacing').min(1).max(20).step(1).name('Spacing').onChange(updateParticles)
 gui.add(debugObject, 'scale').min(0.1).max(10).step(0.1).name('Scale').onChange(updateParticles)

@@ -8,6 +8,10 @@ html, body {
     overflow-y: auto;
 }
 
+body {
+    background-color: #ffffff;
+}
+
 .scroll-spacer {
     height: 200vh;
     pointer-events: none;
@@ -21,4 +25,5 @@ canvas.webgl {
     height: 100vh;
     display: block;
     pointer-events: none;
+    background: transparent;
 }
