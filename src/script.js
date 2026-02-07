@@ -62,11 +62,11 @@ function createParticlesFromImage(imageData, options = {}) {
                 const radius = Math.random()
                 let size
                 if (radius < 0.7) {
-                    size = 0.75 + Math.random() * 0.5
+                    size = 1.0
                 } else if (radius < 0.9) {
-                    size = 1.0 + Math.random() * 0.4
+                    size = 1.25
                 } else {
-                    size = 1.25 + Math.random() * 0.3
+                    size = 1.5
                 }
                 scales.push(size)
             }
@@ -127,7 +127,7 @@ const particles = {
         uniforms: {
             uExplosion: new THREE.Uniform(0),
             uExplosionStrength: new THREE.Uniform(0.3),
-            uSize: new THREE.Uniform(0.07),
+            uSize: new THREE.Uniform(0.06),
             uResolution: new THREE.Uniform(new THREE.Vector2(sizes.width * sizes.pixelRatio, sizes.height * sizes.pixelRatio)),
             uTime: new THREE.Uniform(0),
             uWaveFreq: new THREE.Uniform(16.0),
@@ -187,7 +187,7 @@ loadImagePixels(imagePath)
     })
     .catch((err) => {
         console.error(err)
-        // Fallback: create a simple grid of particles so something renders
+        // Fallback: simple grid of particles so something renders
         const fallback = []
         const fallBackScales = []
         for (let i = -5; i <= 5; i += 0.5) {
@@ -221,7 +221,7 @@ debugObject.clearColor = '#fff'
 gui.addColor(debugObject, 'clearColor').onChange((c) => renderer.setClearColor(c))
 // renderer.setClearColor(debugObject.clearColor)
 
-debugObject.spacing = 12
+debugObject.spacing = 11
 debugObject.scale = 3
 gui.add(debugObject, 'spacing').min(1).max(20).step(1).name('Spacing').onChange(updateParticles)
 gui.add(debugObject, 'scale').min(0.1).max(10).step(0.1).name('Scale').onChange(updateParticles)

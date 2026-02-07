@@ -23,18 +23,19 @@ void main()
 
     vec3 pos = position + vec3(offsetX, offsetY, 0.0);
 
+    // Explosion
     vec2 randomDir = vec2(
-        fract(sin(dot(pos.xy, vec2(12.9898, 78.233))) * 43758.5453),
-        fract(sin(dot(pos.xy + 1.0, vec2(12.9898, 78.233))) * 43758.5453)
-    );
-    randomDir = normalize(randomDir * 2.0 - 1.0);
-    float freq2 = 4.0;
-    vec2 curveDir = vec2(
-        sin(pos.x * freq2) * cos(pos.y),
-        cos(pos.x) * sin(pos.y * freq2)
-    );
-    curveDir = normalize(curveDir + 0.001);
-    vec2 blendedDir = normalize(randomDir + curveDir);
+    fract(sin(dot(position.xy, vec2(12.9898, 78.233))) * 43758.5453),
+    fract(sin(dot(position.xy + 1.0, vec2(12.9898, 78.233))) * 43758.5453)
+        );
+        randomDir = normalize(randomDir * 2.0 - 1.0);
+        float freq2 = 15.0;
+        vec2 curveDir = vec2(
+        sin(position.x * freq2) * cos(position.y),
+        cos(position.x) * sin(position.y * freq2)
+        );
+        curveDir = normalize(curveDir + 0.001);
+        vec2 blendedDir = normalize(randomDir + curveDir);
     pos.xy += blendedDir * uExplosion * uExplosionStrength;
 
     vec4 modelPosition = modelMatrix * vec4(pos, 1.0);
