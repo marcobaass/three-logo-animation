@@ -113,6 +113,7 @@ const particles = {
         depthWrite: false,
         uniforms: {
             uExplosion: new THREE.Uniform(0),
+            uExplosionStrength: new THREE.Uniform(0.3),
             uSize: new THREE.Uniform(0.08),
             uResolution: new THREE.Uniform(new THREE.Vector2(sizes.width * sizes.pixelRatio, sizes.height * sizes.pixelRatio)),
             uTime: new THREE.Uniform(0),
@@ -146,19 +147,19 @@ window.addEventListener('pointerleave', () => {
     pointer.set(-10, -10)
 })
 
-gsap.to({}, {
-    scrollTrigger: {
-        trigger: '.scroll-spacer',
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: 1,
-        yoyo: true,
-        repeat: 1,
-        onUpdate: (self) => {
-            scrollExplosionTarget = Math.sin(self.progress * Math.PI)
-        }
-    }
-})
+// gsap.to({}, {
+//     scrollTrigger: {
+//         trigger: '.scroll-spacer',
+//         start: 'top top',
+//         end: 'bottom bottom',
+//         scrub: 1,
+//         yoyo: true,
+//         repeat: 1,
+//         onUpdate: (self) => {
+//             scrollExplosionTarget = Math.sin(self.progress * Math.PI)
+//         }
+//     }
+// })
 
 /**
  * Load image & update particles
@@ -201,7 +202,7 @@ debugObject.clearColor = '#fff'
 gui.addColor(debugObject, 'clearColor').onChange((c) => renderer.setClearColor(c))
 // renderer.setClearColor(debugObject.clearColor)
 
-debugObject.spacing = 8
+debugObject.spacing = 11
 debugObject.scale = 3
 gui.add(debugObject, 'spacing').min(1).max(20).step(1).name('Spacing').onChange(updateParticles)
 gui.add(debugObject, 'scale').min(0.1).max(10).step(0.1).name('Scale').onChange(updateParticles)
@@ -211,7 +212,7 @@ gui.add(debugObject, 'explosion', 0, 1, 0.01).name('Explosion').onChange((v) => 
 
 gui.add(particles.material.uniforms.uWaveFreq, 'value').min(1).max(20).step(1).name('Wave Frequency')
 gui.add(particles.material.uniforms.uWaveAmp, 'value').min(0.1).max(5).step(0.1).name('Wave Amplitude')
-
+gui.add(particles.material.uniforms.uExplosionStrength, 'value').min(0.1).max(3).step(0.1).name('Explosion Strength')
 /**
  * Animate
  */
@@ -222,7 +223,7 @@ function tick() {
     particles.material.uniforms.uTime.value = clock.getElapsedTime()
 
     // Rotate the particles logo
-    particles.points.rotation.y += 0.0025
+    // particles.points.rotation.y += 0.0025
 
     // Hover: project logo center to screen, check if pointer is near
     logoCenter.set(0, 0, 0)

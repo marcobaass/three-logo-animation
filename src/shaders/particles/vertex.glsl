@@ -4,6 +4,7 @@ uniform float uTime;
 uniform float uExplosion;
 uniform float uWaveFreq;
 uniform float uWaveAmp;
+uniform float uExplosionStrength;
 
 void main()
 {
@@ -38,8 +39,7 @@ void main()
     );
     curveDir = normalize(curveDir + 0.001);
     vec2 blendedDir = normalize(randomDir + curveDir);
-    float explosionStrength = 1.0;
-    pos.xy += blendedDir * uExplosion * explosionStrength;
+    pos.xy += blendedDir * uExplosion * uExplosionStrength;
 
     vec4 modelPosition = modelMatrix * vec4(pos, 1.0);
     vec4 viewPosition = viewMatrix * modelPosition;

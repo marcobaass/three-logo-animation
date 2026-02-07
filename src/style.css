@@ -12,10 +12,10 @@ body {
     background-color: #ffffff;
 }
 
-.scroll-spacer {
+/* .scroll-spacer {
     height: 200vh;
     pointer-events: none;
-}
+} */
 
 canvas.webgl {
     position: fixed;
