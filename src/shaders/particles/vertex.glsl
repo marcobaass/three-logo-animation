@@ -8,23 +8,17 @@ uniform float uExplosionStrength;
 
 void main()
 {
-    // Option D: Original bands + curvature
-    float bandCenterY = sin(position.x * uWaveFreq - uTime * 0.6) * uWaveAmp;
-    float distToBandY = position.y - bandCenterY;
-    float concentrationY = exp(-distToBandY * distToBandY * 1.0);
-    float pullStrengthY = 0.1;
-    float offsetY = (bandCenterY - position.y) * concentrationY * pullStrengthY;
+    // Radial ripple + stronger downward gravity
+    float dist = length(position.xy);
+    float waveAmp = 0.08;      // slightly reduced for less horizontal movement
+    float gravityBias = -0.04;  // doubled: stronger downward drift
 
-    float bandCenterX = sin(position.y * uWaveFreq - uTime * 0.3) * uWaveAmp;
-    float distToBandX = position.x - bandCenterX;
-    float concentrationX = exp(-distToBandX * distToBandX * 6.0);
-    float pullStrengthX = 0.2;
-    float offsetX = (bandCenterX - position.x) * concentrationX * pullStrengthX;
+    float ripple = waveAmp * sin(dist * 3.0 - uTime * 0.8);
+    float angle = atan(position.y, position.x);
+    // Bias ripple toward Y: less horizontal, more vertical
+    float offsetX = ripple * cos(angle) * 0.4;
+    float offsetY = ripple * sin(angle) + gravityBias;
 
-    float curveX = sin(position.x) * cos(position.y) * 0.05;
-    float curveY = cos(position.x) * sin(position.y) * 0.05;
-    offsetX += curveX * sin(uTime);
-    offsetY += curveY * cos(uTime);
     vec3 pos = position + vec3(offsetX, offsetY, 0.0);
 
     vec2 randomDir = vec2(
