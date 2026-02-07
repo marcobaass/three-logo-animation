@@ -6,6 +6,8 @@ uniform float uWaveFreq;
 uniform float uWaveAmp;
 uniform float uExplosionStrength;
 
+attribute float sizeScale;
+
 void main()
 {
     // Radial ripple + stronger downward gravity
@@ -39,6 +41,6 @@ void main()
     vec4 viewPosition = viewMatrix * modelPosition;
     vec4 projectedPosition = projectionMatrix * viewPosition;
     gl_Position = projectedPosition;
-    gl_PointSize = uSize * uResolution.y;
+    gl_PointSize = uSize * sizeScale * uResolution.y;
     gl_PointSize *= (1.0 / - viewPosition.z);
 }

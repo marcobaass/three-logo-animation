@@ -41,6 +41,7 @@ function createParticlesFromImage(imageData, options = {}) {
     const { spacing = 5, scale = 1, threshold = 8 } = options
     const { data, width, height } = imageData
     const positions = []
+    const scales = []
     const aspect = width / height
     const jitter = 0.02
 
@@ -56,10 +57,22 @@ function createParticlesFromImage(imageData, options = {}) {
                     py * scale + (Math.random() - 0.5) * jitter,
                     0
                 )
+
+                // 70% small, 20% medium, 10% large
+                const radius = Math.random()
+                let size
+                if (radius < 0.7) {
+                    size = 0.75 + Math.random() * 0.5
+                } else if (radius < 0.9) {
+                    size = 1.0 + Math.random() * 0.4
+                } else {
+                    size = 1.25 + Math.random() * 0.3
+                }
+                scales.push(size)
             }
         }
     }
-    return new Float32Array(positions)
+    return { positions: new Float32Array(positions), scales: new Float32Array(scales) }
 }
 
 /**
@@ -114,7 +127,7 @@ const particles = {
         uniforms: {
             uExplosion: new THREE.Uniform(0),
             uExplosionStrength: new THREE.Uniform(0.3),
-            uSize: new THREE.Uniform(0.08),
+            uSize: new THREE.Uniform(0.07),
             uResolution: new THREE.Uniform(new THREE.Vector2(sizes.width * sizes.pixelRatio, sizes.height * sizes.pixelRatio)),
             uTime: new THREE.Uniform(0),
             uWaveFreq: new THREE.Uniform(16.0),
@@ -176,23 +189,29 @@ loadImagePixels(imagePath)
         console.error(err)
         // Fallback: create a simple grid of particles so something renders
         const fallback = []
+        const fallBackScales = []
         for (let i = -5; i <= 5; i += 0.5) {
             for (let j = -5; j <= 5; j += 0.5) {
                 fallback.push(i, j, 0)
+                fallBackScales.push(0.05 + Math.random() * 0.3)
             }
         }
         particles.geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(fallback), 3))
         particles.geometry.attributes.position.needsUpdate = true
+        particles.geometry.setAttribute('sizeScale', new THREE.BufferAttribute(new Float32Array(fallBackScales), 1))
+        particles.geometry.attributes.sizeScale.needsUpdate = true
     })
 
 function updateParticles() {
     if (!loadedImageData) return
-    const positions = createParticlesFromImage(loadedImageData, {
+    const { positions, scales } = createParticlesFromImage(loadedImageData, {
         spacing: debugObject.spacing ?? 6,
         scale: debugObject.scale ?? 3
     })
     particles.geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+    particles.geometry.setAttribute('sizeScale', new THREE.BufferAttribute(scales, 1))
     particles.geometry.attributes.position.needsUpdate = true
+    particles.geometry.attributes.sizeScale.needsUpdate = true
 }
 
 /**
@@ -202,7 +221,7 @@ debugObject.clearColor = '#fff'
 gui.addColor(debugObject, 'clearColor').onChange((c) => renderer.setClearColor(c))
 // renderer.setClearColor(debugObject.clearColor)
 
-debugObject.spacing = 11
+debugObject.spacing = 12
 debugObject.scale = 3
 gui.add(debugObject, 'spacing').min(1).max(20).step(1).name('Spacing').onChange(updateParticles)
 gui.add(debugObject, 'scale').min(0.1).max(10).step(0.1).name('Scale').onChange(updateParticles)
