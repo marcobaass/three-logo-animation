@@ -1,0 +1,25 @@
+<!--
+  Webflow Embed - Hero Mouse Tilt
+  ===============================
+  1. Run: npm run build:webflow
+  2. Upload dist/heroMouseTilt.js to your CDN or Webflow Assets
+  3. Upload your logo image (e.g. Logo-s.png) and note its URL
+  4. Paste the code below into Webflow: Add an Embed element, or Project Settings → Custom Code → Footer
+-->
+
+<!-- Container - ensure parent has height (e.g. 100vh). Canvas fills this. -->
+<div id="hero-mouse-tilt-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; min-height: 100vh; pointer-events: none;"></div>
+
+<!-- Load the bundled script (replace URL with your hosted file) -->
+<script src="https://your-cdn.com/heroMouseTilt.js"></script>
+
+<script>
+  (function() {
+    initHeroMouseTilt({
+      container: document.getElementById('hero-mouse-tilt-container'),
+      imageUrl: 'https://your-site.com/Logo-s.png',
+      spacing: 6,
+      scale: 3
+    });
+  })();
+</script>
