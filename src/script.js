@@ -244,6 +244,15 @@ function tick() {
     // Rotate the particles logo
     // particles.points.rotation.y += 0.0025
 
+    // Particles Logo tilt
+    const distanceFromCenter = Math.min(1, Math.hypot(pointer.x, pointer.y))
+    const maxTilt = 0.75
+    const tiltSpeed = 5
+    const targetTiltX = -pointer.y * distanceFromCenter * maxTilt
+    const targetTiltY = pointer.x * distanceFromCenter * maxTilt
+    particles.points.rotation.x += (targetTiltX - particles.points.rotation.x) * Math.min(1, tiltSpeed * delta)
+    particles.points.rotation.y += (targetTiltY - particles.points.rotation.y) * Math.min(1, tiltSpeed * delta)
+
     // Hover: project logo center to screen, check if pointer is near
     logoCenter.set(0, 0, 0)
     logoCenter.project(camera)
