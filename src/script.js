@@ -242,7 +242,7 @@ function tick() {
     particles.material.uniforms.uTime.value = clock.getElapsedTime()
 
     // Rotate the particles logo
-    // particles.points.rotation.y += 0.0025
+    particles.points.rotation.y += 0.0025
 
     // Hover: project logo center to screen, check if pointer is near
     logoCenter.set(0, 0, 0)
