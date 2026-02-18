@@ -242,6 +242,7 @@ function tick() {
     particles.material.uniforms.uTime.value = clock.getElapsedTime()
 
     // Rotate the particles logo
+    
     // particles.points.rotation.y += 0.0025
 
     // Particles Logo tilt
