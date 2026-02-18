@@ -1,13 +1,9 @@
 /**
  * Hero Mouse Tilt - Webflow-compatible vanilla JS module
- * Single-file particle logo animation using Three.js and GSAP
+ * Single-file particle logo animation using Three.js
  */
 
 import * as THREE from 'three'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
 
 const VERTEX_SHADER = `
 uniform vec2 uResolution;
