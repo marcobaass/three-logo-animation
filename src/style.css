@@ -27,3 +27,7 @@ canvas.webgl {
     pointer-events: none;
     background: transparent;
 }
+
+.lil-gui {
+    display: none !important;
+}
